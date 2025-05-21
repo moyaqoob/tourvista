@@ -1,21 +1,19 @@
-import React from 'react'
-import type { Route } from './+types/dashboard'
-import DashBoard from './dashboard'
-import { Outlet } from 'react-router'
-import { NavItems } from '@/components/NavItems'
+import { NavItems } from "@/components/NavItems";
+import { Outlet } from "react-router";
+import { MobileSidebar } from "../../components/mobile-sidebar";
+
 const adminLayout = () => {
   return (
-    <div className='admin-layout'>
-        <aside className='w-[270px] h-screen  '>
-            <NavItems/>
-        </aside>
-        <aside className='children pl-3'>
-            <Outlet/>
-        </aside>
-        
-        
+    <div className="admin-layout">
+      <MobileSidebar />
+      <aside className="w-[270px] h-screen max-lg:hidden">
+          <NavItems handleClick={()=>{}}/>
+      </aside>
+      <aside className="children pl-3">
+        <Outlet />
+      </aside>
     </div>
-  )
-}
+  );
+};
 
-export default adminLayout
+export default adminLayout;

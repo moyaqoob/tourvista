@@ -8,9 +8,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  console.log("home reached")
   return (
     <div className="text-2xl flex bg-red-500 items-center justify-end ">
-      hi there
+         home page
     </div>
   )
 }

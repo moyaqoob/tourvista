@@ -1,8 +1,14 @@
-import React from 'react'
+import { NavItems } from "./NavItems"
+import { MobileSidebar } from "./mobile-sidebar"
+import Header from "./Header"
+import StatsCard from "./StatsCard"
+import TripCard from "./TripCard"
 
 const index = () => {
   return (
-    <div>index</div>
+    <div>
+      
+    </div>
   )
 }
 

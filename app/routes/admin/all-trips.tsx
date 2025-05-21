@@ -1,7 +1,20 @@
-import React from 'react'
+import Button from "@/components/Button"
+import Header from "@/components/Header"
 
-export const AllTrips = () => {
+const AllTrips = () => {
   return (
-    <div>all-trips</div>
+    <main className='dashboard wrapper'>
+      <div className='flex-between'>
+      <Header
+        title=' Trips'
+        description='view and generate AI travel plans'
+      />
+      <Button  text='Create a trip'/>
+
+      </div>
+    </main>
   )
 }
+
+
+export default AllTrips
