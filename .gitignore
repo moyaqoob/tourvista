@@ -1,7 +1,28 @@
-.DS_Store
+# Node.js
 /node_modules/
+
+# Build Output
+/build/
+
+# Environment Files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# OS-specific files
+.DS_Store
 
 # React Router
 /.react-router/
-/build/
-.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE Specific
+.vscode/
+.idea/
+*.iml
