@@ -43,11 +43,11 @@ const DashBoard = () => {
           />
         </div>
       </section>
-      <section className="container">
+      <section className="flex flex-col gap-9 mt-2.5">
         <div className="text-2xl">
             Trips
         </div>
-        <div className="grid grid-cols-4 trip-card gap-4">
+        <div className="trip-card grid grid-cols-4">
           {allTrips.slice(0,4).map(({id,name,imageUrls,itinerary,tags,estimatedPrice})=>(
               <TripCard
                 key={id}

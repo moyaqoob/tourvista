@@ -8,7 +8,7 @@ const TripCard = ({id,name,imageUrl,location,tags,price}:TripCardProps) => {
   const path = useLocation();
   return (
     <Link to={path.pathname === "/" || path.pathname === "/travels"?
-      `/travel/${id}` : `/trips/${id}`} className='block gap-2'>
+      `/travel/${id}` : `/trips/${id}`} className={" relative rounded-md bg-white "}>
         <img src={imageUrl} alt="Image Url"/>
 
         <article>
@@ -22,7 +22,7 @@ const TripCard = ({id,name,imageUrl,location,tags,price}:TripCardProps) => {
           </figure>
         </article>
 
-        <div className='mt-5 pl-[18px] pr-3.5  pb-5'>
+        <div className='mt-5 pl-[18px] pr-3.5 text-black pb-5'>
             <ChipListComponent id='travel-chip'>
                 {tags.map((tag,index)=>(
                   <ChipDirective
@@ -36,7 +36,7 @@ const TripCard = ({id,name,imageUrl,location,tags,price}:TripCardProps) => {
         </div>
 
         <article className='tripCard-pill bg-white'>
-          {price} hello world
+          {price}
         </article>
     </Link>
   )
