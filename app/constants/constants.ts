@@ -1,24 +1,23 @@
 import type { AxisModel } from "@syncfusion/ej2-react-charts";
 import {formatDate} from "@/lib/utils";
 import { icons } from "@public/assets";
-import images from "@public/assets";
-
+import { type TagVariant } from "@/components/TripCard";
 export const sidebarItems = [
   {
     id: 1,
-    icon: "/public/icons/home.svg",
+    icon: "/icons/home.svg",
     label: "Dashboard",
     href: "/dashboard",
   },
   {
     id: 3,
-    icon: "/public/icons/users.svg",
+    icon: "/icons/users.svg",
     label: "All Users",
     href: "/all-users",
   },
   {
     id: 4,
-    icon: "/public/icons/itinerary.svg",
+    icon: "/icons/itinerary.svg",
     label: "AI Trips",
     href: "/trips",
   },
@@ -155,7 +154,7 @@ export const dashboardStats = {
 export const allTrips = [{
       id: 1,
       name: "Ancient Ruins",
-      imageUrls: ["/public/images/card-img-3.png"],
+      imageUrls: ["/images/card-img-3.png"],
       itinerary: [{ location: "Greece" }],
       tags: ["Adventure", "Culture"],
       travelStyle: "Solo",
@@ -164,7 +163,7 @@ export const allTrips = [{
     {
       id: 2,
       name: "Gondola Ride",
-      imageUrls: ["/public/images/card-img-4.png"],
+      imageUrls: ["/images/card-img-4.png"],
       itinerary: [{ location: "Venice" }],
       tags: ["Relaxation", "Culinary"],
       travelStyle: "Family",
@@ -173,7 +172,7 @@ export const allTrips = [{
     {
       id: 3,
       name: "Italy's Hidden Retreat",
-      imageUrls: ["/public/images/card-img-5.png"],
+      imageUrls: ["/images/card-img-5.png"],
       itinerary: [{ location: "Positano" }],
       tags: ["Shopping", "Luxury"],
       travelStyle: "Couple",
@@ -182,19 +181,20 @@ export const allTrips = [{
     {
       id: 4,
       name: "Culture Refresh",
-      imageUrls: ["/public/images/card-img-6.png"],
+      imageUrls: ["/images/card-img-6.png"],
       itinerary: [{ location: "Thailand" }],
       tags: ["Historical", "Culture"],
       travelStyle: "Friends",
       estimatedPrice: "$4,000",
     },
-    ];
+  ];
+
 export const users = [
   {
     id: 1,
     name: "John Doe",
     email: "john.doe@example.com",
-    imageUrl: "/public/images/david.webp",
+    imageUrl: "/images/david.webp",
     dateJoined: formatDate("2025-01-01"),
     itineraryCreated: 10,
     status: "user",
@@ -203,7 +203,7 @@ export const users = [
     id: 2,
     name: "Jane Smith",
     email: "jane.smith@example.com",
-    imageUrl: "/public/images/david.webp",
+    imageUrl: "/images/david.webp",
     dateJoined: formatDate("2025-01-02"),
     itineraryCreated: 4,
     status: "user",
@@ -212,7 +212,7 @@ export const users = [
     id: 3,
     name: "John Smith",
     email: "john.smith@example.com",
-    imageUrl: "/public/images/david.webp",
+    imageUrl: "/images/david.webp",
     dateJoined: formatDate("2025-01-03"),
     itineraryCreated: 8,
     status: "admin",

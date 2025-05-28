@@ -15,15 +15,15 @@ export const MobileSidebar = () => {
     }
   };
   return (
-    <div className="mobile-sidebar wrapper">
+    <div className="mobile-sidebar wrapper ">
       <header>
         <Link to={"/"}>
-          <img src={icons.logo} alt="Logo" className="size-[30px]" />
+          <img src={'/icons/logo.svg'} alt="Logo" className="size-[30px]" />
         </Link>
         {/* The left side bar whihc contains the dash,all users and trips */}
 
         <button onClick={()=>console.log("item clicked")}>
-          <img src={icons.menu} alt="menu" className="size-8 " />
+          <img src={'/icons/home.svg'} alt="menu" className="size-8 " />
         </button>
     
       </header>

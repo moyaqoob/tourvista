@@ -27,7 +27,7 @@ const StatsCard = ({
               )}
             >
               <figcaption className="flex items-center">
-                <img src={decrement ? icons.arrowDownRed : icons.arrowUpGreen} alt=""/>
+                <img src={decrement ? '/icons/arrow-down-red.svg' : '/icons/arrow-up-green.svg'} alt="image "/>
                 
                 <span>{Math.round(percentage)}%</span>
                 <p className="text-gray-100 flex items-center gap-x-2 ml-3">

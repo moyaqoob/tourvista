@@ -8,21 +8,21 @@ const navData = [
     name: "Dashboard",
     href: "/dashboard",
     alt: "Dashboard logo",
-    img: homeIcon,
+    img: '/icons/home.svg',
   },
   {
     id: 2,
     name: "All Users",
     href: "/all-users",
     alt: "All trips logo",
-    img: itenaryIcon,
+    img: '/icons/itinerary.svg',
   },
   {
     id: 3,
     name: "AI Trips",
     href: "/all-trips",
     alt: "AI trips logo",
-    img: usersIcon,
+    img: '/icons/users.svg',
   },
 ];
 

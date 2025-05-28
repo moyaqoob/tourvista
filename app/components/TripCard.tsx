@@ -1,9 +1,22 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router'
 import { icons } from '@public/assets';
-import pkg from "@syncfusion/ej2-react-buttons"
-import { cn, getFirstWord } from '@/lib/utils';
-const {ChipDirective,ChipListComponent}  = pkg;
+import { cn } from '@/lib/utils';
+
+export type TagVariant = 'Historical' | 'Culture' | 'Shopping' | 'Culinary' | 'Relaxation' | 'Luxury' | 'Adventure';
+
+const variantMap: Record<TagVariant,string> = {
+  Historical : "bg-[#ECFDF3] text-[#027A48]",
+  Culture: "bg-[#F3F0FB]  text-[#6941C6]",
+  Luxury : "text-[#026AA2] bg-[#F0F9FF]",
+  Culinary:'bg-[#F8F9FC] text-[#363F72]',
+  Relaxation: "text-[#C11574] bg-[#F7EDF6]",
+  Shopping: 'bg-[#FFF4ED] text-[#B93815] ',
+  Adventure:'bg-[#FFF1F3] text-[#C01048]'
+};
+
+
+
 const TripCard = ({id,name,imageUrl,location,tags,price}:TripCardProps) => {
   const path = useLocation();
   return (
@@ -11,28 +24,23 @@ const TripCard = ({id,name,imageUrl,location,tags,price}:TripCardProps) => {
       `/travel/${id}` : `/trips/${id}`} className={" relative rounded-md bg-white "}>
         <img src={imageUrl} alt="Image Url"/>
 
-        <article>
+        <article className='pb-3'>
             <h2>{name}</h2>
-          <figure>
+          <figure className='-bottom-2'>
             <img src={icons.locationMark} className='size-4' alt="location "/>
             
-            <figcaption>
+            <figcaption className='text-base'>
             {location}
             </figcaption>
           </figure>
         </article>
 
-        <div className='mt-5 pl-[18px] pr-3.5 text-black pb-5'>
-            <ChipListComponent id='travel-chip'>
-                {tags.map((tag,index)=>(
-                  <ChipDirective
-                    key={index}
-                    text={getFirstWord(tag)}
-                    cssClass={cn(index===1?"bg-pink-50 !text-pink-500":"!bg-success-50 !text-success-700")}
-                  />
-              
-                ))}
-            </ChipListComponent>
+        <div className='flex gap-2 pb-5 px-4 mt-1' >
+        {tags.map((item: TagVariant)=>(
+                <div key={item} className={cn(`text-md border rounded-full px-2 py-1 ${variantMap[item]}`)}>
+                  {item}
+                </div>
+        ))}
         </div>
 
         <article className='tripCard-pill bg-white'>

@@ -1,15 +1,15 @@
 import React from 'react'
-
+import { cn } from '@/lib/utils'
 interface ButtonProps{
-    text:string
+    text:string,
+    className?:string
 }
 
-const Button = ({text}:ButtonProps) => {
+const Button = ({text,className}:ButtonProps) => {
   return (
-    <button className='button-class w-56 h-11'>
+    <button className={cn("button-class w-56 h-11",className)}>
         <span>+</span>{text}
     </button>
   )
 }
-
 export default Button

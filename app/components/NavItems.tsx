@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
-import { Link, NavLink } from 'react-router'
-import logo from "@public/icons/logo.svg"
+import { Link, Navigate, NavLink, redirect, useLoaderData, useNavigate } from 'react-router'
 import navData from './NavData'
 import { cn } from '@/lib/utils'
-import images from '@public/assets'
-import { icons } from '@public/assets'
+import { getUser, logout } from '@/auth/auth'
 export const NavItems = ({handleClick}:{handleClick?:()=>void}) => {
     const [isActive,setIsActive] = useState(Boolean);
+    const navigate = useNavigate();
+   
+    const user = useLoaderData();
 
-    const user = {
-    name: "yaqoob",
-    email: "moyaqoob28@gmail.com",
-    img : images.david
-    };
+    const handleLogout =async ()=>{
+       await logout();
+       return navigate("/sign-in")
+    }
 
   return (
     <section className='nav-items'>
         <Link to={'/'} className='link-logo max-md:hidden'>
-            <img src={logo} alt=""/>
+            <img src={'/icons/logo.svg'} alt=""/>
             <p>Tourvista</p>
         </Link>
 
@@ -40,23 +40,21 @@ export const NavItems = ({handleClick}:{handleClick?:()=>void}) => {
                 ))}
             </nav>
             <footer className='nav-footer'>
-                <img src={user.img} alt=""/>
+                <img src={user.imgUrl || "/images/david.webp"} alt="user image" referrerPolicy="no-referrer"/>
                 <article>
                     <h2>
-                        {user.name}
+                        {user?.name}
                     </h2>
                     <h2>
-                        {user.email}
+                        {user?.email}
                     </h2>
                 </article>
 
 
                 <button
-                 onClick={()=>{
-                    console.log("logout")
-                 }}
+                 onClick={handleLogout}
                 >
-                    
+                <img src='/icons/logout.svg' alt='logout'  className='h-7 w-7 text-black'/>
                 </button>
             </footer>
         </div>

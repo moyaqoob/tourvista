@@ -79,7 +79,7 @@ declare interface TripCardProps {
   name: string;
   location: string;
   imageUrl: string;
-  tags: string[];
+  tags: TagVariants[];
   price: string;
 }
 

@@ -45,7 +45,7 @@ import star from "./icons/star.svg";
 import users from "./icons/users.svg";
 
 // Export all icons as an object
-export const icons = {
+const icons = {
   arrowDown,
   arrowDownRed,
   arrowLeft,
@@ -97,4 +97,4 @@ const images = {
     sample4,
 };
 
-export default images;
+export {images,icons};

@@ -9,8 +9,8 @@ const DashBoard = () => {
   const { totalUsers, usersJoined, totalTrips, tripsCreated, userRole } =
     dashboardStats;
 
-  const date = formatDate("2024-12-15");
-  console.log(date);
+  
+
   return (
     <main className="dashboard wrapper">
       <div className="flex-between">
