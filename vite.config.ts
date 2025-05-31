@@ -13,4 +13,7 @@ export default defineConfig({
     host: true,          // Ensures the server is accessible from other devices
     open: true,          // Automatically opens the browser on server start
   },
+  ssr:{
+    noExternal:[/@syncfusion/]
+  }
 });

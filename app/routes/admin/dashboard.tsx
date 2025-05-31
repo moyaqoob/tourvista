@@ -47,7 +47,7 @@ const DashBoard = () => {
         <div className="text-2xl">
             Trips
         </div>
-        <div className="trip-card grid grid-cols-4">
+        <div className="trip-card grid grid-cols-2 md:grid-cols-4">
           {allTrips.slice(0,4).map(({id,name,imageUrls,itinerary,tags,estimatedPrice})=>(
               <TripCard
                 key={id}

@@ -1,6 +1,7 @@
 import { ID, OAuthProvider, Query } from "appwrite";
 import { redirect } from "react-router";
 import { account, appwriteConfig, database } from "./client";
+import { user } from "@/constants/constants";
 
 export function loginWithgoogle() {
   try {
@@ -47,6 +48,27 @@ export async function getUser() {
     console.log("error getting user");
   }
 }
+export async function getGooglePicture(accessToken: string) {
+  try {
+    const response = await fetch(
+      "https://people.googleapis.com/v1/people/me?personFields=photos",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    console.log(response,"response")
+    if (!response.ok) {
+      console.log("Failed to fetch profile picture from Google API");
+      return null;
+    }
+    const { photos } = await response.json();
+    return photos?.[0]?.url || null;
+  } catch {
+    console.log("error fetching the google picture");
+  }
+}
 export async function storeUserData() {
   try {
     const user = account.get();
@@ -64,6 +86,7 @@ export async function storeUserData() {
     }
 
     const { providerAccessToken } = await account.getSession("current");
+    console.log(providerAccessToken)
     const profilePicture = providerAccessToken
       ? await getGooglePicture(providerAccessToken)
       : null;
@@ -89,26 +112,7 @@ export async function storeUserData() {
     console.log("error storing the data");
   }
 }
-export async function getGooglePicture(accessToken: string) {
-  try {
-    const response = await fetch(
-      "https://people.googleapis.com/v1/people/me?personFields=photos",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    if (!response.ok) {
-      console.log("Failed to fetch profile picture from Google API");
-      return null;
-    }
-    const { photos } = await response.json();
-    return photos?.[0]?.url || null;
-  } catch {
-    console.log("error fetching the google picture");
-  }
-}
+
 
 export async function getExistingUser(id: string) {
   try {
@@ -121,5 +125,24 @@ export async function getExistingUser(id: string) {
     return total > 0 ? documents[0] : null;
   } catch {
     console.log("error fetching the existing user");
+  }
+}
+
+export const getAllUsers = async(limit:number,offset:number)=>{
+  try{
+
+    const {documents:users,total} =await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userscollection,
+      [Query.limit(limit),Query.offset(offset)]
+    );
+
+    if(total == 0) return {users:[],total}
+
+    return {users,total}
+
+  }catch(e){
+    console.log("error occured while fetching users")
+    return {users:[],total:0}
   }
 }

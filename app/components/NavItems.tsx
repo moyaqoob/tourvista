@@ -40,7 +40,7 @@ export const NavItems = ({handleClick}:{handleClick?:()=>void}) => {
                 ))}
             </nav>
             <footer className='nav-footer'>
-                <img src={user.imgUrl || "/images/david.webp"} alt="user image" referrerPolicy="no-referrer"/>
+                <img src={user.imgUrl || "null"} alt="user image" referrerPolicy="no-referrer"/>
                 <article>
                     <h2>
                         {user?.name}

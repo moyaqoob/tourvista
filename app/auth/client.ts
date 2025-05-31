@@ -6,7 +6,8 @@ const appwriteConfig = {
     databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID || " ",
     userscollection: import.meta.env.VITE_APPWRITE_USERS_COLLECTION || " ",
     tripsCollection: import.meta.env.VITE_APPWRITE_TRIPS_COLLECTION || " ",
-    endpointUrl: import.meta.env.VITE_APPWRITE_URL || "NOT found "
+    endpointUrl: import.meta.env.VITE_APPWRITE_URL || "NOT found ",
+    licenseKey:import.meta.env.VITE_SYNCFUSION_LICENSE_KEY || "license not found"
 };
 
  const client =  new Client() 

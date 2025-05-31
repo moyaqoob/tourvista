@@ -1,18 +1,16 @@
 import { account } from "@/auth/client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 export async function clientLoader() {
   const params = new URLSearchParams(window.location.search);
   const userId = params.get("userId") || null;
   const secret = params.get("secret") || null;
-
   if (userId && secret) {
     localStorage.setItem("userId", userId);
     localStorage.setItem("secret", secret);
   }
 }
-
 
 export default function Home() {
   const navigate = useNavigate();
@@ -22,21 +20,23 @@ export default function Home() {
 
   useEffect(() => {
     async function checkSession() {
-      setLoading(true);
       const userId = localStorage.getItem("userId");
-      const secret = localStorage.getItem("secret");  
-      console.log(userId)
+      const secret = localStorage.getItem("secret");
+
       if (!userId || !secret) {
         navigate("/sign-in");
         return;
       }
 
       try {
-        await account.createSession(userId, secret);
+        await account.createSession(userId,secret) // Session is created only if it doesn't exist
+        console.log("hi")
         const user = await account.get();
-        setName(user.name);
+        console.log("bye")
+        if (user?.$id) {
+          setName(user.name);
 
-        if (!user.$id) {
+        } else {
           navigate("/sign-in");
         }
       } catch (err) {
@@ -48,20 +48,36 @@ export default function Home() {
       }
     }
 
-     checkSession();
-  }, [1]);
+    checkSession();
+  }, [navigate]);
 
-  
+  async function deleteSession() {
+    try {
+      await account.deleteSession("current");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("secret");
+      navigate("/sign-in");
+    } catch (err) {
+      console.error("Error during logout", err);
+    }
+  }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   return (
-    <div className="text-2xl flex flex-col items-center bg-red-500 text-center">
-      {error && <div className="text-red-500 mb-4">{error}</div>}
-      Welcome {name}
-      
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+      <h1 className="text-4xl font-bold mb-4">Welcome {name || "Guest"}!</h1>
+      {error && (
+        <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>
+      )}
+      <button
+        onClick={deleteSession}
+        className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition duration-300"
+      >
+        Logout
+      </button>
     </div>
   );
 }
