@@ -14,9 +14,8 @@ const routes: RouteConfig = [
     route("dashboard", "./routes/admin/dashboard.tsx"),
     route("all-users", "./routes/admin/all-users.tsx"),
     route("all-trips", "./routes/admin/all-trips.tsx"),
-    route("create-trips", "./routes/admin/all-trips.tsx"),
+    route("create-trips", "./routes/admin/create-trips.tsx"),
   ]),
-  route("api", "./routes/api.ts"),
 ];
 
 export default routes;

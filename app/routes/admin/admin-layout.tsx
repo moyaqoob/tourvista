@@ -17,11 +17,9 @@ export async function clientLoader() {
       await storeUserData();
       existingUser = await getExistingUser(user.$id);
     }
-    console.log(existingUser,"existing User",existingUser?.status)
     if (existingUser?.status === "user") {
       return redirect("/");
     } else if (existingUser?.status === "admin") {
-      console.log("Admin Dashboard", existingUser);
       return existingUser; 
     }
     
