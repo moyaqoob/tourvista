@@ -4,15 +4,15 @@ import { FaGoogle } from "react-icons/fa"
 import { redirect } from 'react-router';
 import { loginWithgoogle } from '@/auth/auth';
 
-export async function clientLoader() {
-    try {
-        const user = await account.get();
-        if(user.$id) return redirect('/');
-        console.log(user.name,"from signin")
-    } catch (e) {
-        console.log('Error fetching user', e)
-    }
-}
+// export async function clientLoader() {
+//     try {
+//         const user = await account.get();
+//         if(user.$id) return redirect('/');
+//         console.log(user.name,"from signin")
+//     } catch (e) {
+//         console.log('Error fetching user', e)
+//     }
+// }
 
 
 const signin = () => {

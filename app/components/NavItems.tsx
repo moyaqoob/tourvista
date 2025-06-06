@@ -3,6 +3,7 @@ import { Link, Navigate, NavLink, redirect, useLoaderData, useNavigate } from 'r
 import navData from './NavData'
 import { cn } from '@/lib/utils'
 import { getUser, logout } from '@/auth/auth'
+import { FaUser } from "react-icons/fa"
 export const NavItems = ({handleClick}:{handleClick?:()=>void}) => {
     const [isActive,setIsActive] = useState(Boolean);
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ export const NavItems = ({handleClick}:{handleClick?:()=>void}) => {
                 ))}
             </nav>
             <footer className='nav-footer'>
-                <img src={user.imgUrl || "null"} alt="user image" referrerPolicy="no-referrer"/>
+                <img src={'/icons/user.svg'} alt="user image" referrerPolicy="no-referrer"/>
                 <article>
                     <h2>
                         {user?.name}

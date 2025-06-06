@@ -1,13 +1,17 @@
-import { interests } from "@/constants/constants";
+import { budgetOptions, interests } from "@/constants/constants";
 import {
   LayerDirective,
   LayersDirective,
   MapsComponent,
 } from "@syncfusion/ej2-react-maps";
+import { Toaster, toast } from "react-hot-toast";
 
 import { world_map } from "@/constants/world_map";
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import type { Route } from "./+types/create-trips";
+import { account } from "@/auth/client";
+import { Form, useNavigate } from "react-router";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const response = await fetch(
@@ -25,20 +29,6 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 };
 
 // Sample data - replace with your actual data
-
-const budgetOptions = [
-  { value: "budget", text: "Budget ($0 - $1000)", icon: "💰" },
-  { value: "moderate", text: "Mid-Range", icon: "💵" },
-  { value: "Premium", text: "Premium", icon: "💎" },
-  { value: "luxury", text: "Luxury", icon: "💎💎" },
-];
-
-const durationOptions = [
-  { value: "1-3", text: "1-3 Days", icon: "⚡" },
-  { value: "4-7", text: "4-7 Days", icon: "📅" },
-  { value: "1-2weeks", text: "1-2 Weeks", icon: "🗓️" },
-  { value: "3weeks+", text: "3+ Weeks", icon: "📆" },
-];
 
 const groupType = [
   { value: "solo", text: "Solo ", icon: "🧳" },
@@ -59,20 +49,19 @@ const travelStyles = [
 
 interface TripFormData {
   country: string;
-  location: string;
   budget: string;
-  duration: string;
+  duration: number;
   groupType: string;
   travelType: string;
   interests: string;
 }
 
 const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<TripFormData>({
     country: "",
-    location: "",
     budget: "",
-    duration: "",
+    duration: 0,
     groupType: "",
     travelType: "",
     interests: "",
@@ -82,6 +71,8 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [loading, setloading] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
   const countries = loaderData as Country[];
 
@@ -121,11 +112,13 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
 
   const mapData = [
     {
-      country:formData.country,
-      color:"#EA382E",
-      coordinates:countries.find((c:Country)=>c.name === formData.country)?.coordinates || []
-    }
-  ]
+      country: formData.country,
+      color: "#EA382E",
+      coordinates:
+        countries.find((c: Country) => c.name === formData.country)
+          ?.coordinates || [],
+    },
+  ];
 
   const handleOptionClick = (countryName: string) => {
     handleChange("country", countryName);
@@ -133,13 +126,67 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
     setDropdownOpen(false);
   };
 
-  const onHandleSubmit = (e: React.FormEvent) => {
+  const onHandleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
+    setloading(true);
+
+    if (
+      !formData.country ||
+      !formData.budget ||
+      !formData.duration ||
+      !formData.groupType ||
+      !formData.interests ||
+      !formData.travelType
+    ) {
+      setError("Please Fill All the fields ");
+      toast.error("Please fill All the fields");
+      setloading(false);
+      return;
+    }
+
+    if(formData.duration < 1 ||  formData.duration > 10){
+        setError("Duration should be between 1 to 10 days")
+        setloading(false)
+        return;
+    }
+    const user = await account.get();
+
+    if(!user.$id){
+      toast.error("User is not logged in")
+      setloading(false)
+      return;
+    }
+    try{
+      //we hit the end point of create Trip and get the response 
+      const response = await fetch('/api/create-trip',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+            country:formData.country,
+            duration:formData.duration,
+            travelStyles:formData.travelType,
+            interests:formData.interests,
+            budget:formData.budget,
+            groupType:formData.groupType,
+            userId:user.$id
+        })
+      })
+
+      const result:CreateTripResponse = await response.json();
+      
+      if(result.id) navigate(`/trips/${result.id}`) 
+      else console.error("failed to generate the trip")
+
+    } catch(e){
+        console.error("Error generating trip",e)
+    }finally{
+      setloading(false)
+    }
   };
 
   return (
     <main className="max-w-4xl mx-auto p-6">
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex justify-between items-center -mt-5 md:mt-0 mb-8">
         <div>
           <h1 className="text-3xl font-bold">Add New Trip</h1>
@@ -147,7 +194,7 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
             View and generate AI travel plans
           </p>
         </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xl md:py-2 md:px-7 sm:px-4 sm:py-2 px-2 py-2  rounded-lg">
           Create a Trip
         </button>{" "}
         {/* Changed Button to button for simplicity; ensure it's imported if using a component */}
@@ -157,7 +204,7 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
         {" "}
         {/* Simplified Card to div for example; use Card if available */}
         <section className="gap-y-4">
-          <form onSubmit={onHandleSubmit} className="space-y-6">
+          <Form onSubmit={onHandleSubmit} method="post" className="space-y-6">
             {/* Country Input remains unchanged */}
             <div className="flex flex-col gap-2">
               <label htmlFor="country" className="text-sm font-medium">
@@ -207,9 +254,11 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
               </label>
               <input
                 id="duration"
-                value={formData.duration}
+                value={Number(formData.duration)}
                 className="w-full border p-2"
                 placeholder="Enter the duration (in Numbers)"
+                min={"1"}
+                max={"10"}
                 onChange={(e) => handleChange("duration", e.target.value)}
               />{" "}
               {/* Changed Input to input */}
@@ -225,44 +274,30 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
               </label>
               <select
                 value={formData.groupType}
-                onChange={(e) => handleChange("groupType", e.target.value)} // Simplified to native select for demonstration; use Shadcn Select with onValueChange
+                onChange={(e) => handleChange("groupType", e.target.value)} //
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               >
                 <option value="">Select a group type</option>
-                {groupType.map((group) => (
-                  <option key={group.value} value={group.value}>
+                {groupType.map((group,index) => (
+                  <option key={index} >
                     {group.text}
                   </option>
                 ))}
               </select>
-              {/* If using Shadcn Select, it should be: */}
-              {/* <Select value={formData.groupType} onValueChange={(value) => handleChange("groupType", value)}>
-                <SelectTrigger className="w-full border border-gray-300 rounded-lg p-3 text-gray-700">
-                  <SelectValue placeholder="Select a group type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {groupType.map((group) => (
-                    <SelectItem key={group.value} value={group.value}>
-                      {group.text}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select> */}
             </div>
 
-            {/* Travel Type - Fixed by adding onValueChange to Select */}
             <div className="space-y-2">
               <label htmlFor="travelType" className="text-sm font-medium">
                 Travel Type
               </label>
               <select
                 value={formData.travelType}
-                onChange={(e) => handleChange("travelType", e.target.value)} // Simplified to native select; use Shadcn with onValueChange
+                onChange={(e) => handleChange("travelType", e.target.value)} //
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               >
                 <option value="">Select Travel Type</option>
-                {travelStyles.map((option) => (
-                  <option key={option.value} value={option.value}>
+                {travelStyles.map((option,index) => (
+                  <option key={index}>
                     {option.text}
                   </option>
                 ))}
@@ -276,12 +311,31 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
               </label>
               <select
                 value={formData.interests}
-                onChange={(e) => handleChange("interests", e.target.value)} // Simplified to native select; use Shadcn with onValueChange
+                onChange={(e) => handleChange("interests", e.target.value)}
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               >
                 <option value="">Select Interests</option>
                 {interests.map((option) => (
-                  <option key={option} value={option}>
+                  <option key={option} >
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Budgets */}
+            <div className="space-y-2">
+              <label htmlFor="budget" className="text-sm font-medium">
+                Budgets
+              </label>
+              <select
+                value={formData.budget}
+                onChange={(e) => handleChange("budget", e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
+              >
+                <option value="">Select your Budget</option>
+                {budgetOptions.map((option,index) => (
+                  <option key={index} >
                     {option}
                   </option>
                 ))}
@@ -294,12 +348,12 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
               </label>
               <MapsComponent>
                 <LayersDirective>
-                  <LayerDirective 
-                  shapeData={world_map}
-                  dataSource={mapData}
-                  shapePropertyPath={"name"}
-                  shapeDataPath="country"
-                  shapeSettings={{colorValuePath:'color',fill:'#00000'}}
+                  <LayerDirective
+                    shapeData={world_map}
+                    dataSource={mapData}
+                    shapePropertyPath={"name"}
+                    shapeDataPath="country"
+                    shapeSettings={{ colorValuePath: "color", fill: "#00000" }}
                   />
                 </LayersDirective>
               </MapsComponent>
@@ -307,11 +361,16 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
 
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-600 w-full hover:bg-blue-700 flex items-center  justify-center text-white text-2xl font-normal py-2 gap-1.5 px-4 rounded"
             >
-              Submit
+              <img
+                src={`/icons/${loading ? "loader.svg" : "magic-star.svg"}`}
+                alt="Icon"
+                className={cn("size-5", loading && "animate-spin")}
+              />
+              {loading ? "Generating..." : "Generate  trip"}
             </button>
-          </form>
+          </Form>
         </section>
       </div>
 

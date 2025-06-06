@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import { cn, formatDate } from "@/lib/utils";
 import { ColumnsDirective } from "@syncfusion/ej2-react-charts";
 import { ColumnDirective, GridComponent } from "@syncfusion/ej2-react-grids";
-import type { Route } from "../+types/api";
+import type { Route } from "../+types/home";
 import Button from "@/components/Button";
 import { FaTrash } from "react-icons/fa";
 
@@ -14,7 +14,7 @@ export async function loader({params}:Route.LoaderArgs){
 }
 
 const AllUsers = ({loaderData}:Route.ComponentProps) => {
- //@ts-ignore
+// @ts-ignore
   const { users} = loaderData;
   // console.log(users,"new users")
   return (
@@ -41,7 +41,7 @@ const AllUsers = ({loaderData}:Route.ComponentProps) => {
         template={(props: UserData) => (
           <div className="flex items-center gap-2 px-4">
             <img
-              src={props.imageUrl}
+              src={props.imageUrl || '/ico'}
               alt="user"
               className="rounded-full w-8 h-8 p-1"
               referrerPolicy="no-referrer"
