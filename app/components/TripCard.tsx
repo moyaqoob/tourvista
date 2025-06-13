@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router'
-import { icons } from '@public/assets';
+import { icons } from 'public/assets';
 import { cn } from '@/lib/utils';
 
 export type TagVariant = 'Historical' | 'Culture' | 'Shopping' | 'Culinary' | 'Relaxation' | 'Luxury' | 'Adventure';

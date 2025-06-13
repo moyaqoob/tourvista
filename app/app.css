@@ -286,9 +286,9 @@
     }
   }
   .nav-footer {
-    @apply flex items-center gap-2.5 pb-8;
+    @apply flex items-center gap-2.5 pb-4;
     img {
-      @apply size-10 rounded-full aspect-square;
+      @apply size-10 rounded-full ;
     }
     article {
       @apply flex flex-col gap-[2px] max-w-[115px];

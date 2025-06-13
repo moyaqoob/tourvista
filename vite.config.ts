@@ -8,12 +8,20 @@ export default defineConfig({
   server: {
     watch: {
       usePolling: true, // Forces Vite to check for changes using polling
-      interval: 100,    // Adjust polling interval for better responsiveness
+      interval: 100, // Adjust polling interval for better responsiveness
     },
-    host: true,          // Ensures the server is accessible from other devices
-    open: true,          // Automatically opens the browser on server start
+    proxy: {
+      "/api": {
+        target: "http://localhost:5173", // Backend server
+        changeOrigin: true,
+        secure:false,
+      
+      },
+    },
+    host: true, // Ensures the server is accessible from other devices
+    open: true, // Automatically opens the browser on server start
   },
-  ssr:{
-    noExternal:[/@syncfusion/]
-  }
+  ssr: {
+    noExternal: [/@syncfusion/],
+  },
 });

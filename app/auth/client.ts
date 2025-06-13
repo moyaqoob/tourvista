@@ -1,30 +1,25 @@
-import {Account, Client, Databases, Storage} from "appwrite";
+import { Account, Client, Databases, Storage } from "appwrite";
 const appwriteConfig = {
-    projectId: import.meta.env.VITE_APPWRITE_PROJECT_ID || " ",
-    auth: import.meta.env.VITE_APPWRITE_AUTH_KEY || "",
-    api_secret: import.meta.env.VITE_API_SECRET || "",
-    databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID || " ",
-    userscollection: import.meta.env.VITE_APPWRITE_USERS_COLLECTION || " ",
-    tripsCollection: import.meta.env.VITE_APPWRITE_TRIPS_COLLECTION || " ",
-    endpointUrl: import.meta.env.VITE_APPWRITE_URL || "NOT found ",
-    licenseKey:import.meta.env.VITE_SYNCFUSION_LICENSE_KEY || "license not found",
-    geminiKey:import.meta.env.VITE_GEMINI_KEY,
-    unsplashKey:import.meta.env.VITE_UNSPLASH_KEY
+  projectId: import.meta.env.VITE_APPWRITE_PROJECT_ID || " ",
+  auth: import.meta.env.VITE_APPWRITE_AUTH_KEY || "",
+  api_secret: import.meta.env.VITE_API_SECRET || "",
+  databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID || " ",
+  userscollection: import.meta.env.VITE_APPWRITE_USERS_COLLECTION || " ",
+  tripsCollection: import.meta.env.VITE_APPWRITE_TRIPS_COLLECTION || " ",
+  endpointUrl: import.meta.env.VITE_APPWRITE_URL || "NOT found ",
+  licenseKey:
+    import.meta.env.VITE_SYNCFUSION_LICENSE_KEY || "license not found",
+  geminiKey: import.meta.env.VITE_GEMINI_KEY,
+  unsplashKey: import.meta.env.VITE_UNSPLASH_KEY,
 };
 
- const client =  new Client() 
-    .setEndpoint(appwriteConfig.endpointUrl)
-    .setProject(appwriteConfig.projectId)
+const client = new Client()
+  .setEndpoint(appwriteConfig.endpointUrl)
+  .setProject("682fe887001e4d61be51");
 
-const account = new Account(client)
+const account = new Account(client);
 
+const database = new Databases(client);
+const storage = new Storage(client);
 
-
-
-
-const database = new Databases(client)
-const storage = new Storage(client)
-
-export {account,database,storage,appwriteConfig,client};
-
-
+export { account, appwriteConfig, client, database, storage };

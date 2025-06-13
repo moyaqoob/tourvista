@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"],
-      "@public/*":["./public/*"]
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,

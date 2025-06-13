@@ -1,5 +1,4 @@
 import calculateMonthPercentage, { cn } from "@/lib/utils";
-import { icons } from "@public/assets";
 
 const StatsCard = ({
   headerTitle,
@@ -27,8 +26,15 @@ const StatsCard = ({
               )}
             >
               <figcaption className="flex items-center">
-                <img src={decrement ? '/icons/arrow-down-red.svg' : '/icons/arrow-up-green.svg'} alt="image "/>
-                
+                <img
+                  src={
+                    decrement
+                      ? "/icons/arrow-down-red.svg"
+                      : "/icons/arrow-up-green.svg"
+                  }
+                  alt="image "
+                />
+
                 <span>{Math.round(percentage)}%</span>
                 <p className="text-gray-100 flex items-center gap-x-2 ml-3">
                   vs <span className="font-medium ml-1">last month</span>
@@ -38,8 +44,14 @@ const StatsCard = ({
           </div>
         </div>
 
-        <img src={decrement?`${icons.decrement}`:`${icons.increment}`} alt={decrement?"Decrement graph":"Increment graph"}
-        className="xl:w-32 w-full h-full xl:h-full md:h-20 "
+        <img
+          src={
+            decrement
+              ? `${"/icons/decrement.svg"}`
+              : `${"/icons/increment.svg"}`
+          }
+          alt={decrement ? "Decrement graph" : "Increment graph"}
+          className="xl:w-32 w-full h-full xl:h-full md:h-20 "
         />
       </div>
     </article>

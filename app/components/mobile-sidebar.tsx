@@ -1,9 +1,7 @@
 //@ts-nocheck
-import { icons } from "@public/assets";
 import { type SidebarComponent } from "@syncfusion/ej2-react-navigations";
-import { Link } from "react-router";
-import { NavItems } from "./NavItems";
 import { useRef } from "react";
+import { Link } from "react-router";
 
 export const MobileSidebar = () => {
   const sidebarRef = useRef<SidebarComponent>(null);
@@ -18,14 +16,13 @@ export const MobileSidebar = () => {
     <div className="mobile-sidebar wrapper ">
       <header>
         <Link to={"/"}>
-          <img src={'/icons/logo.svg'} alt="Logo" className="size-[30px]" />
+          <img src={"/images/card-img-1.png"} alt="Logo" className="size-[30px]" />
         </Link>
         {/* The left side bar whihc contains the dash,all users and trips */}
 
-        <button onClick={()=>console.log("item clicked")}>
-          <img src={'/icons/home.svg'} alt="menu" className="size-8 " />
+        <button onClick={() => console.log("item clicked")}>
+          <img src={"/icons/home.svg"} alt="menu" className="size-8 " />
         </button>
-    
       </header>
       {/* <sidebar
         width={270}

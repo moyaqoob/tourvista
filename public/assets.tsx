@@ -1,100 +1,53 @@
-// Import all images
-import authImg from "./images/auth-img.webp";
-import cardImg1 from "./images/card-img-1.png";
-import cardImg2 from "./images/card-img-2.png";
-import cardImg3 from "./images/card-img-3.png";
-import cardImg4 from "./images/card-img-4.png";
-import cardImg5 from "./images/card-img-5.png";
-import cardImg6 from "./images/card-img-6.png";
-import content from "./images/content.png";
-import david from "./images/david.webp";
-import heroImg from "./images/hero-img.png";
-import james from "./images/james.webp";
-import michael from "./images/michael.webp";
-import readme from "./images/readme.png";
-import sample from "./images/sample.jpeg";
-import sample1 from "./images/sample1.jpg";
-import sample2 from "./images/sample2.jpg";
-import sample3 from "./images/sample3.jpg";
-import sample4 from "./images/sample4.jpg";
-// Import all icons
-import arrowDown from "./icons/arrow-down.svg";
-import arrowDownRed from "./icons/arrow-down-red.svg";
-import arrowLeft from "./icons/arrow-left.svg";
-import arrowUpGreen from "./icons/arrow-up-green.svg";
-import blueCheck from "./icons/blue-check.svg";
-import calendar from "./icons/calendar.svg";
-import check from "./icons/check.svg";
-import decrement from "./icons/decrement.svg";
-import destination from "./icons/destination.svg";
-import filter from "./icons/filter.svg";
-import google from "./icons/google.svg";
-import home from "./icons/home.svg";
-import increment from "./icons/increment.svg";
-import itinerary from "./icons/itinerary.svg";
-import itineraryButton from "./icons/itinerary-button.svg";
-import loader from "./icons/loader.svg";
-import locationMark from "./icons/location-mark.svg";
-import logo from "./icons/logo.svg";
-import logout from "./icons/logout.svg";
-import magicStar from "./icons/magic-star.svg";
-import menu from "./icons/menu.svg";
-import plus from "./icons/plus.svg";
-import refresh from "./icons/refresh.svg";
-import star from "./icons/star.svg";
-import users from "./icons/users.svg";
-
-// Export all icons as an object
-const icons = {
-  arrowDown,
-  arrowDownRed,
-  arrowLeft,
-  arrowUpGreen,
-  blueCheck,
-  calendar,
-  check,
-  decrement,
-  destination,
-  filter,
-  google,
-  home,
-  increment,
-  itinerary,
-  itineraryButton,
-  loader,
-  locationMark,
-  logo,
-  logout,
-  magicStar,
-  menu,
-  plus,
-  refresh,
-  star,
-  users,
-};
-
-
-
-// Export them as a single object
+// Export all image paths as strings
 const images = {
-    authImg,
-    cardImg1,
-    cardImg2,
-    cardImg3,
-    cardImg4,
-    cardImg5,
-    cardImg6,
-    content,
-    david,
-    heroImg,
-    james,
-    michael,
-    readme,
-    sample,
-    sample1,
-    sample2,
-    sample3,
-    sample4,
+  authImg: "/images/auth-img.webp",
+  cardImg1: "/images/card-img-1.png",
+  cardImg2: "/images/card-img-2.png",
+  cardImg3: "/images/card-img-3.png",
+  cardImg4: "/images/card-img-4.png",
+  cardImg5: "/images/card-img-5.png",
+  cardImg6: "/images/card-img-6.png",
+  content: "/images/content.png",
+  david: "/images/david.webp",
+  heroImg: "/images/hero-img.png",
+  james: "/images/james.webp",
+  michael: "/images/michael.webp",
+  readme: "/images/readme.png",
+  sample: "/images/sample.jpeg",
+  sample1: "/images/sample1.jpg",
+  sample2: "/images/sample2.jpg",
+  sample3: "/images/sample3.jpg",
+  sample4: "/images/sample4.jpg",
 };
 
-export {images,icons};
+// Export all icon paths as strings
+const icons = {
+  arrowDownRed: "/icons/arrow-down-red.svg",
+  arrowDown: "/icons/arrow-down.svg",
+  arrowLeft: "/icons/arrow-left.svg",
+  arrowUpGreen: "/icons/arrow-up-green.svg",
+  blueCheck: "/icons/blue-check.svg",
+  calendar: "/icons/calendar.svg",
+  check: "/icons/check.svg",
+  decrement: "/icons/decrement.svg",
+  destination: "/icons/destination.svg",
+  filter: "/icons/filter.svg",
+  google: "/icons/google.svg",
+  home: "/icons/home.svg",
+  increment: "/icons/increment.svg",
+  itineraryButton: "/icons/itinerary-button.svg",
+  itinerary: "/icons/itinerary.svg",
+  loader: "/icons/loader.svg",
+  locationMark: "/icons/location-mark.svg",
+  logo: "/images/logo.svg",
+  logout: "/icons/logout.svg",
+  magicStar: "/icons/magic-star.svg",
+  menu: "/icons/menu.svg",
+  plus: "/icons/plus.svg",
+  refresh: "/icons/refresh.svg",
+  star: "/icons/star.svg",
+  users: "/icons/users.svg",
+};
+
+
+export { icons, images };

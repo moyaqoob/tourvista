@@ -3,8 +3,7 @@ import { Outlet, redirect } from "react-router";
 import { MobileSidebar } from "../../components/mobile-sidebar";
 import { account } from "@/auth/client";
 import { getExistingUser, storeUserData } from "@/auth/auth";
-import Callback from "@/constants/callback";
-
+import toast from "react-hot-toast";
 
 export async function clientLoader() {
   try {
@@ -12,13 +11,14 @@ export async function clientLoader() {
     if (!user.$id) return redirect("/sign-in");
 
     let existingUser = await getExistingUser(user.$id);
+    
 
     if (!existingUser) {
       await storeUserData();
       existingUser = await getExistingUser(user.$id);
     }
     if (existingUser?.status === "user") {
-      return redirect("/");
+      return existingUser
     } else if (existingUser?.status === "admin") {
       return existingUser; 
     }

@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 interface ButtonProps{
     text:string,
     className?:string
-    onClick?: (()=>void),
+    onClick?: ()=>void,
 }
 
 const Button = ({text,className}:ButtonProps) => {

@@ -4,14 +4,15 @@ import {
   LayersDirective,
   MapsComponent,
 } from "@syncfusion/ej2-react-maps";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
+import { account } from "@/auth/client";
 import { world_map } from "@/constants/world_map";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 import React, { useState } from "react";
-import type { Route } from "./+types/create-trips";
-import { account } from "@/auth/client";
 import { Form, useNavigate } from "react-router";
+import type { Route } from "../+types/home";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const response = await fetch(
@@ -74,14 +75,12 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
   const [loading, setloading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const countries = loaderData as Country[];
-
+  const countries = (loaderData ?? []) as Country[];
   const handleChange = (key: keyof TripFormData, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value,
     }));
-    console.log(`changed LATEX_0_1749140502394{value}`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,61 +125,42 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
     setDropdownOpen(false);
   };
 
-  const onHandleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+  // In the handleSubmit function:
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setloading(true);
-
-    if (
-      !formData.country ||
-      !formData.budget ||
-      !formData.duration ||
-      !formData.groupType ||
-      !formData.interests ||
-      !formData.travelType
-    ) {
-      setError("Please Fill All the fields ");
-      toast.error("Please fill All the fields");
-      setloading(false);
-      return;
-    }
-
-    if(formData.duration < 1 ||  formData.duration > 10){
-        setError("Duration should be between 1 to 10 days")
-        setloading(false)
-        return;
-    }
+    setError(undefined); // Clear previous errors
     const user = await account.get();
 
-    if(!user.$id){
-      toast.error("User is not logged in")
-      setloading(false)
-      return;
-    }
-    try{
-      //we hit the end point of create Trip and get the response 
-      const response = await fetch('/api/create-trip',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-            country:formData.country,
-            duration:formData.duration,
-            travelStyles:formData.travelType,
-            interests:formData.interests,
-            budget:formData.budget,
-            groupType:formData.groupType,
-            userId:user.$id
-        })
-      })
+    try {
+      const response = await axios.post("/create-trip", {
+        country: formData.country,
+        duration: formData.duration,
+        travelType: formData.travelType,
+        interests: formData.interests,
+        budget: formData.budget,
+        groupType: formData.groupType,
+        userId: user.$id,
+      });
+      if (response.status == 400) {
+        console.log("there is a problem with the fetch");
+        const errorData = await response.data();
+        throw new Error(errorData.error || "Failed to generate trip");
+      }
+      console.log("reached here");
 
-      const result:CreateTripResponse = await response.json();
-      
-      if(result.id) navigate(`/trips/${result.id}`) 
-      else console.error("failed to generate the trip")
+      const result = await response.data;
 
-    } catch(e){
-        console.error("Error generating trip",e)
-    }finally{
-      setloading(false)
+      if (result?.id) {
+        navigate(`/trips/${result.id}`);
+      } else {
+        throw new Error("No trip ID received");
+      }
+    } catch (e) {
+      console.error("Error generating trip:", e);
+      setError(e instanceof Error ? e.message : "Failed to generate trip");
+    } finally {
+      setloading(false);
     }
   };
 
@@ -204,7 +184,11 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
         {" "}
         {/* Simplified Card to div for example; use Card if available */}
         <section className="gap-y-4">
-          <Form onSubmit={onHandleSubmit} method="post" className="space-y-6">
+          <Form
+            onSubmit={handleSubmit}
+            action="/create-trip"
+            className="space-y-6"
+          >
             {/* Country Input remains unchanged */}
             <div className="flex flex-col gap-2">
               <label htmlFor="country" className="text-sm font-medium">
@@ -278,10 +262,8 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               >
                 <option value="">Select a group type</option>
-                {groupType.map((group,index) => (
-                  <option key={index} >
-                    {group.text}
-                  </option>
+                {groupType.map((group, index) => (
+                  <option key={index}>{group.text}</option>
                 ))}
               </select>
             </div>
@@ -296,10 +278,8 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               >
                 <option value="">Select Travel Type</option>
-                {travelStyles.map((option,index) => (
-                  <option key={index}>
-                    {option.text}
-                  </option>
+                {travelStyles.map((option, index) => (
+                  <option key={index}>{option.text}</option>
                 ))}
               </select>
             </div>
@@ -316,9 +296,7 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
               >
                 <option value="">Select Interests</option>
                 {interests.map((option) => (
-                  <option key={option} >
-                    {option}
-                  </option>
+                  <option key={option}>{option}</option>
                 ))}
               </select>
             </div>
@@ -334,10 +312,8 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-700"
               >
                 <option value="">Select your Budget</option>
-                {budgetOptions.map((option,index) => (
-                  <option key={index} >
-                    {option}
-                  </option>
+                {budgetOptions.map((option, index) => (
+                  <option key={index}>{option}</option>
                 ))}
               </select>
             </div>

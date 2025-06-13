@@ -6,6 +6,7 @@ import { ColumnDirective, GridComponent } from "@syncfusion/ej2-react-grids";
 import type { Route } from "../+types/home";
 import Button from "@/components/Button";
 import { FaTrash } from "react-icons/fa";
+import { images } from "public/assets";
 
 export async function loader({params}:Route.LoaderArgs){
   const {users,total} = await getAllUsers(10,0);
@@ -41,9 +42,9 @@ const AllUsers = ({loaderData}:Route.ComponentProps) => {
         template={(props: UserData) => (
           <div className="flex items-center gap-2 px-4">
             <img
-              src={props.imageUrl || '/ico'}
+              src={"/images/users.png"}
               alt="user"
-              className="rounded-full w-8 h-8 p-1"
+              className="rounded-full w-9 h-9 pr-2"
               referrerPolicy="no-referrer"
             />
             <span className="text-xl">{props.name}</span>
