@@ -78,7 +78,7 @@ declare interface Trip {
 declare interface TripCardProps {
   id: string;
   name: string;
-  location: string;
+  location: string ;
   imageUrl: string;
   tags: TagVariants[];
   price: string;

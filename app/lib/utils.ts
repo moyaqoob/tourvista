@@ -83,35 +83,19 @@ export function parseMarkDowntoJson(markdownText: string): unknown | null {
   }
 }
 
-export function parseTripData(jsonString: string): Trip | null {
+export const parseTripData = (tripData: any) => {
   try {
-    // Handle case where input is already an object
-    if (typeof jsonString === "object") {
-      return jsonString as Trip;
-    }
+    // Check if tripData.tripDetail is already an object
+    const tripDetail = typeof tripData.tripDetail === 'string' 
+      ? JSON.parse(tripData.tripDetail)
+      : tripData.tripDetail;
 
-    // Try parsing the string
-    let parsedData: Trip;
-    try {
-      parsedData = JSON.parse(jsonString);
-    } catch (parseError) {
-      console.error("JSON Parse Error:", parseError);
-      // Try to clean the string if it has escaped quotes
-      const cleanedString = jsonString.replace(/\\"/g, '"');
-      parsedData = JSON.parse(cleanedString);
-    }
-
-    // Basic validation of parsed data
-    if (!parsedData || typeof parsedData !== "object") {
-      console.error("Invalid data structure:", parsedData);
-      return null;
-    }
-
-    console.log("Successfully parsed trip data");
-    return parsedData;
+    return {
+      ...tripData,
+      tripDetail
+    };
   } catch (error) {
-    console.error("Error in parseTripData:", error);
-    console.log("Failed string:", jsonString?.substring(0, 100) + "...");
-    return null;
+    console.error('Failed to parse trip data:', error);
+    throw new Error('Invalid trip data format');
   }
-}
+};

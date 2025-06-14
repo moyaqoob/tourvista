@@ -1,5 +1,5 @@
 import { loginWithgoogle } from "@/auth/auth";
-import { account } from "@/auth/client";
+import { account, appwriteConfig } from "@/auth/client";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
@@ -11,13 +11,15 @@ import { images } from "public/assets";
 export async function clientLoader() {
   try {
     const user = await account.get();
+    console.log(user.$id)
     if (user?.$id) {
       return redirect('/'); 
     }
   } catch (error) {
     console.log('User not authenticated, showing sign-in page');
   }
-  
+    console.log(appwriteConfig.projectId)
+    console.log(appwriteConfig.unsplashKey)
   return null; // Stay on sign-in page
 }
 

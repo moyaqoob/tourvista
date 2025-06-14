@@ -15,7 +15,7 @@ const appwriteConfig = {
 
 const client = new Client()
   .setEndpoint(appwriteConfig.endpointUrl)
-  .setProject("682fe887001e4d61be51");
+  .setProject(appwriteConfig.projectId);
 
 const account = new Account(client);
 

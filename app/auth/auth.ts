@@ -10,9 +10,9 @@ export async function loginWithgoogle() {
     // Create OAuth2 session
      account.createOAuth2Token(
       OAuthProvider.Google,
-      `${window.location.origin}/auth/callback/`, // Callback URL
-      `${window.location.origin}/sign-in` // Failure URL
-    );
+      `${window.location.origin}/auth/callback`,
+      `${window.location.origin}/sign-in`
+     )
     
   } catch (error: any) {
     if (error?.message?.includes("Rate limit")) {

@@ -10,6 +10,7 @@ export const NavItems = ({ handleClick }: { handleClick?: () => void }) => {
   
 
   const user = useLoaderData();
+  console.log(user)
   const secret = localStorage.getItem("secret");
   const handleLogout = async () => {
     await logout();
@@ -50,8 +51,8 @@ export const NavItems = ({ handleClick }: { handleClick?: () => void }) => {
             className="rounded-full w-10 h-10"
           />
           <article >
-            <h2>{user?.name || "mo"} </h2>
-            <h2>{user?.email || "xyz@gmail"}</h2>
+            <h2>{user?.name} </h2>
+            <h2>{user?.email }</h2>
           </article>
 
           <button

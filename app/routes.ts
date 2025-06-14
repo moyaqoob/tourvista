@@ -9,7 +9,7 @@ export const loader = async () => null;
 
 export default [
   route("sign-in", "./routes/auth/signin.tsx"),
-  route("auth/callback/", "./routes/api/callback.ts"),
+  route("auth/callback", "./routes/api/callback.ts"),
   route('create-trip','routes/api/create-trip.ts'),
   index("./routes/home.tsx"),
   layout("./routes/admin/admin-layout.tsx", [
