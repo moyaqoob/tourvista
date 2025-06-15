@@ -99,3 +99,21 @@ export const parseTripData = (tripData: any) => {
     throw new Error('Invalid trip data format');
   }
 };
+
+export function parseTripsData(jsonString: string): Trip | null {
+  try {
+    // Check if jsonString is already an object
+    if (typeof jsonString === "object") {
+      return jsonString as Trip; // If it's an object, return it directly
+    }
+
+    // Attempt to parse the JSON string
+    const data: Trip = JSON.parse(jsonString);
+
+    return data;
+  } catch (error) {
+    console.error("Failed to parse trip data:", error);
+    console.log("Invalid tripDetails:", jsonString); // Log the invalid data
+    return null;
+  }
+}

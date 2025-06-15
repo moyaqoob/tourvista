@@ -10,7 +10,6 @@ export const NavItems = ({ handleClick }: { handleClick?: () => void }) => {
   
 
   const user = useLoaderData();
-  console.log(user)
   const secret = localStorage.getItem("secret");
   const handleLogout = async () => {
     await logout();

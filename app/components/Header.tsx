@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 
 interface HeaderProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 const Header = ({ title, description }: HeaderProps) => {

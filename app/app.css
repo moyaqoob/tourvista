@@ -289,6 +289,24 @@
       }
     }
   }
+  .trip-cards {
+    @apply gap-2 ;
+    img {
+      @apply w-full h-60 rounded-t-xl object-cover aspect-square;
+    }
+    article {
+      @apply flex flex-col gap-3 mt-4 pl-[18px] pr-3.5;
+      h2 {
+        @apply text-sm md:text-lg font-semibold text-dark-100 line-clamp-2;
+      }
+      figure {
+        @apply flex items-center gap-2;
+        figCaption {
+          @apply text-xs md:text-sm font-normal text-gray-100;
+        }
+      }
+    }
+  }
   .link-logo {
     @apply flex items-center gap-1.5 py-10 border-b border-light-100;
     h1 {
