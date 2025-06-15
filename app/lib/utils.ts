@@ -16,12 +16,12 @@ export default function calculateMonthPercentage({
   lastMonthCount,
 }: percentageProps) {
   if (lastMonthCount === 0) {
-    if (currentMonthCount === 0) {
-      return { percentage: 0, trend: "no change" };
-    } else {
-      return { percentage: 100, trend: "increased" };
-    }
+  if (currentMonthCount === 0) {
+    return { percentage: 0, trend: "no change" };
+  } else {
+    return { percentage: (currentMonthCount -  lastMonthCount)*100, trend: "increased" };
   }
+}
 
   const change = currentMonthCount - lastMonthCount;
   const percentage = Math.abs((change / lastMonthCount) * 100);
@@ -34,7 +34,6 @@ export default function calculateMonthPercentage({
     return { percentage: 0, trend: "no change" };
   }
 }
-
 export const formatDate = (date: string): string => {
   return dayjs(date).format("MMMM DD,YYYY");
 };

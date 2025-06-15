@@ -272,7 +272,7 @@
     }
   }
   .trip-card {
-    @apply shadow-300 rounded-[20px] flex flex-col w-full bg-white gap-4 relative;
+    @apply shadow-300 rounded-[20px] flex flex-col w-full  gap-4 relative;
     img {
       @apply w-full h-[160px] rounded-t-xl object-cover aspect-video;
     }
@@ -290,7 +290,7 @@
     }
   }
   .trip-cards {
-    @apply gap-2 ;
+    @apply gap-2;
     img {
       @apply w-full h-60 rounded-t-xl object-cover aspect-square;
     }

@@ -15,7 +15,7 @@ export const getAllTrips = async (limit: number, offset: number) => {
             ]
         );
 
-        console.log("Fetched trips:", allTrips.documents); // Debugging log
+     
 
         if (allTrips.total === 0) {
             console.error('No trips found');
@@ -50,4 +50,16 @@ export const getTripById =async(tripId:string)=>{
 
     //the whole trip
     return trip;
+}
+
+export const deleteTripById =async(tripId:string)=>{
+    if(!tripId){
+        console.log("Id not found")
+    }
+    await database.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.tripsCollection,
+        tripId
+    )
+
 }

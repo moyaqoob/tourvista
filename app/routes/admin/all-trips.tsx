@@ -15,7 +15,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const page = parseInt(url.searchParams.get("page") || "1", 10);
     const offset = (page - 1) * limit;
     const { allTrips, total } = await getAllTrips(limit, offset);
-    console.log(allTrips,"all trips")
 
     // Map the trips data correctly
     const trips = allTrips.map(({ $id, tripDetail, imageUrls }) => ({
@@ -56,17 +55,6 @@ const AllTrips = ({
       <section>
 
         <div className="trip-cards grid grid-cols-2 md:grid-cols-4">
-          {trips.map((trip,id) => (
-           <TripCard
-                key={id}
-                id={trip.id}
-                name={trip.name}
-                imageUrl={trip.imageUrls[2]}
-                location={trip.itinerary?.[0]?.location}
-                tags={[trip.interests,trip.travelStyle]}
-                price={trip.estimatedPrice}
-              />
-          ))}
           {trips.map((trip,id) => (
            <TripCard
                 key={id}

@@ -36,7 +36,9 @@ export async function logout() {
 }
 export async function getUser() {
   try {
+    console.log("entering the get user")
     const user = account.get();
+    console.log("got the user",(await user).name)
 
     if (!user) return redirect("/sign-in");
 
@@ -48,6 +50,7 @@ export async function getUser() {
         Query.select(["name", "email", "imageUrl", "joinedAt", "accountId"]),
       ]
     );
+    console.log(documents[0])
 
     if (documents.length > 0) {
       return documents[0];
