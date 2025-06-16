@@ -1,9 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "builds": [
-    {
-      "src": "Dockerfile",
-      "use": "@vercel/docker"
-    }
-  ]
+  "buildCommand": "npm run build",
+  "outputDirectory": ".react-router"
 }
