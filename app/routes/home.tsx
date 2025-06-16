@@ -1,15 +1,21 @@
 import { logout } from "@/auth/auth";
 import { account } from "@/auth/client";
+import Pagination from "@/components/pagination";
 import TripCard from "@/components/TripCard";
 import { parseTripsData } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, type LoaderFunctionArgs } from "react-router";
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+  type LoaderFunctionArgs,
+} from "react-router";
 import type { Route } from "./+types/home";
 import { getAllTrips } from "./api/trips";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const limit = 8;
+    const limit = 4;
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get("page") || "1", 10);
     const offset = (page - 1) * limit;
@@ -33,7 +39,16 @@ function Home({ loaderData }: Route.ComponentProps) {
   const { trips } = loaderData;
   const [name, setName] = useState<string | null>(null);
   const navigate = useNavigate();
-  console.log("trips from home page", trips);
+
+  const [searchParams] = useSearchParams();
+  const initialPage = Number(searchParams.get("page") || "1");
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    navigate(`?page=${page}`);
+  };
 
   useEffect(() => {
     async function fetchUser() {
@@ -54,6 +69,12 @@ function Home({ loaderData }: Route.ComponentProps) {
 
     fetchUser();
   }, [navigate]);
+
+  const handleLogout = async () => {
+    await logout();
+    await account.deleteSession("current");
+    return navigate("/sign-in");
+  };
 
   if (name === null) {
     return (
@@ -87,9 +108,9 @@ function Home({ loaderData }: Route.ComponentProps) {
             />
             <img
               src="/icons/logout.svg"
-              className="w-8 h-7 rounded-full"
+              className="w-8 h-7 cursor-pointer rounded-full"
               alt="user image"
-              onClick={logout}
+              onClick={handleLogout}
             />
           </article>
         </div>
@@ -107,9 +128,11 @@ function Home({ loaderData }: Route.ComponentProps) {
               destination, set your preferences, and explore with confidence.
             </p>
 
-            <button className=" text-2xl mt-5 rounded-xl bg-[#256FF1] pt-4 pr-14 pb-4 pl-14 ">
-              Get Started
-            </button>
+            <Link to={"/create-trips"}>
+              <button className=" text-2xl mt-5 rounded-xl cursor-pointer hover:bg-[#256FF1] pt-4 pr-14 pb-4 pl-14 bg-[#6c6db8] ">
+               Get Started
+              </button>
+            </Link>
           </article>
         </section>
       </header>
@@ -170,10 +193,11 @@ function Home({ loaderData }: Route.ComponentProps) {
             interests
           </p>
         </div>
-        <section className="flex flex-col gap-9 mt-2.5">
+        <section className="flex w-[1160px] flex-col gap-9 mt-2.5">
           <div className="text-2xl">Trips</div>
+          {trips.length > 0 ? (
           <div className="trip-card grid grid-cols-2 md:grid-cols-4">
-            {trips
+             {trips
               .slice(0, 8)
               .map(
                 ({
@@ -201,6 +225,14 @@ function Home({ loaderData }: Route.ComponentProps) {
                 }
               )}
           </div>
+        ) : (
+          <div className="text-xl text-center">No Trips Found</div>
+        )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(loaderData.total / 4)} // Calculate total pages based on total trips and page size
+            onPageChange={handlePageChange}
+          />
         </section>
       </section>
     </div>
@@ -208,3 +240,4 @@ function Home({ loaderData }: Route.ComponentProps) {
 }
 
 export default Home;
+

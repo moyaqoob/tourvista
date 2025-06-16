@@ -156,7 +156,7 @@
   }
 
   .travel-hero {
-    @apply bg-hero w-full h-[95vh] bg-origin-content bg-cover;
+    @apply bg-hero w-full h-[720px] bg-origin-content bg-cover;
 
     div {
       @apply flex  bg-cover;

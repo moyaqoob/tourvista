@@ -1,4 +1,3 @@
-import { deleteTripById } from "@/routes/api/trips";
 import { icons } from "public/assets";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
@@ -11,13 +10,10 @@ const TripCard = ({
   location,
   tags,
   price,
-}: TripCardProps) => {
+  onDelete, // Make onDelete optional
+}: TripCardProps & { onDelete?: (id: string) => void }) => {
   const path = useLocation();
   const [showModal, setShowModal] = useState(false);
-
-  const DeleteTrip = async (id: string) => {
-    await deleteTripById(id);
-  };
 
   const generateDynamicStyle = (tag: string) => {
     const colors = [
@@ -83,7 +79,7 @@ const TripCard = ({
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm">
           <div className="bg-white rounded-lg p-6 shadow-lg w-[90%] max-w-md">
             <h2 className="text-lg font-semibold mb-4 text-dark-100">
               Are you sure you want to delete this trip?
@@ -102,7 +98,9 @@ const TripCard = ({
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                 onClick={(e) => {
                   e.preventDefault(); // Prevent navigation
-                  DeleteTrip(id);
+                  if (onDelete) {
+                    onDelete(id); // Call onDelete only if provided
+                  }
                   setShowModal(false);
                 }}
               >

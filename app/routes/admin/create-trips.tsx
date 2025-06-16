@@ -74,7 +74,7 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [loading, setloading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-
+   //@ts-ignore
   const countries = (loaderData ?? []) as Country[];
   const handleChange = (key: keyof TripFormData, value: string) => {
     setFormData((prev) => ({
@@ -350,12 +350,7 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
         </section>
       </div>
 
-      <div className="mt-6">
-        <h2 className="text-lg font-bold">Form Data</h2>
-        <pre className="bg-gray-100 p-4 rounded-lg">
-          {JSON.stringify(formData, null, 2)}
-        </pre>
-      </div>
+     
     </main>
   );
 };

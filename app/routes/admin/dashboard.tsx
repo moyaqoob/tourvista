@@ -101,7 +101,7 @@ const DashBoard = ({
   const { trips, dashboardStats, usersGrowth, tripsByTravelStyle, allUsers } =
     loaderData;
 
-  const alltrips = trips.map((trip) => ({
+  const alltrips = trips.slice(0,3).map((trip) => ({
     imageUrl: trip.imageUrls[0],
     name: trip.name,
     interest: trip.interests,
