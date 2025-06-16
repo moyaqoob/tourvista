@@ -4,22 +4,24 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  build: {
+    outDir: "build", // Matches Dockerfile's `COPY --from=build-env /app/build`
+  },
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   server: {
     watch: {
-      usePolling: true, // Forces Vite to check for changes using polling
-      interval: 100, // Adjust polling interval for better responsiveness
+      usePolling: true,
+      interval: 100,
     },
     proxy: {
       "/api": {
-        target: "http://localhost:5173", // Backend server
+        target: "http://localhost:5173",
         changeOrigin: true,
-        secure:false,
-      
+        secure: false,
       },
     },
-    host: true, // Ensures the server is accessible from other devices
-    open: true, // Automatically opens the browser on server start
+    host: true,
+    open: true,
   },
   ssr: {
     noExternal: [/@syncfusion/],
