@@ -12,7 +12,6 @@ import "./app.css";
 import { appwriteConfig } from "@/auth/client";
 import { registerLicense } from "@syncfusion/ej2-base";
 
-import { BrowserRouter } from "react-router-dom";
 
 registerLicense(appwriteConfig.licenseKey);
 
