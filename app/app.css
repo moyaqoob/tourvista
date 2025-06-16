@@ -115,6 +115,9 @@
   .auth {
     @apply w-full h-screen flex bg-auth bg-cover bg-no-repeat;
   }
+  .hero {
+    @apply w-full h-screen flex bg-auth bg-cover bg-no-repeat;
+  }
 
   .payment-success {
     @apply flex flex-col gap-10 pb-20 items-center justify-center h-screen;
@@ -153,10 +156,10 @@
   }
 
   .travel-hero {
-    @apply bg-hero bg-origin-content bg-cover;
+    @apply bg-hero w-full h-[95vh] bg-origin-content bg-cover;
 
     div {
-      @apply flex flex-col bg-linear100 bg-cover;
+      @apply flex  bg-cover;
 
       section {
         @apply py-48 justify-center items-start flex flex-col gap-6;

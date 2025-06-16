@@ -54,7 +54,7 @@ const AllTrips = ({
       </div>
       <section>
 
-        <div className="trip-cards grid grid-cols-2 md:grid-cols-4">
+        <div className="trip-card grid grid-cols-2 md:grid-cols-4">
           {trips.map((trip,id) => (
            <TripCard
                 key={id}

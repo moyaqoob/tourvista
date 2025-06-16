@@ -56,6 +56,14 @@ declare interface Location {
   openStreetMap: string;
 }
 
+declare interface UsersAndTrips {
+  title: string;
+  dataSource: any; 
+  field: string;
+  headerText?: string;
+}
+
+
 declare interface Trip {
   id: string;
   name: string;
@@ -136,6 +144,7 @@ declare interface UsersItineraryCount {
   imageUrl: string;
   name: string;
   count: number;
+  status?:string
 }
 
 declare interface TripsInterest {
