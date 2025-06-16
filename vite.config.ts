@@ -1,26 +1,16 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { reactRouter } from "@react-router/dev/vite";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-  server: {
-    watch: {
-      usePolling: true,
-      interval: 100,
-    },
-    proxy: {
-      "/api": {
-        target: "http://localhost:5173",
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-    host: true,
-    open: true,
-  },
-  ssr: {
-    noExternal: [/@syncfusion/],
-  },
+// Import the SSR plugin (see references for install instructions)
+
+export default defineConfig(config => {
+  return {
+    plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
+    ssr: {
+      noExternal: [/@syncfusion/]
+    }
+  };
 });
