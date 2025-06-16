@@ -4,9 +4,6 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  build: {
-    outDir: "build", // Matches Dockerfile's `COPY --from=build-env /app/build`
-  },
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   server: {
     watch: {
