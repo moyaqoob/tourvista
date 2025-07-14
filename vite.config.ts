@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // Import the SSR plugin (see references for install instructions)
 
-export default defineConfig((config) => {
+export default defineConfig(() => {
   return {
     plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
     build: {

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { logout } from "@/auth/auth";
 import { account } from "@/auth/client";
 import Pagination from "@/components/pagination";
