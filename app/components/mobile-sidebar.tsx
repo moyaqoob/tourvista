@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { type SidebarComponent } from "@syncfusion/ej2-react-navigations";
+
 import { useRef } from "react";
 import { Link } from "react-router";
 

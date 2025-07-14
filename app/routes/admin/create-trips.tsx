@@ -1,18 +1,15 @@
 import { budgetOptions, interests } from "@/constants/constants";
-import {
-  LayerDirective,
-  LayersDirective,
-  MapsComponent,
-} from "@syncfusion/ej2-react-maps";
 import { Toaster } from "react-hot-toast";
 
 import { account } from "@/auth/client";
-import { world_map } from "@/constants/world_map";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import React, { useState } from "react";
 import { Form, useNavigate } from "react-router";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+
 import type { Route } from "../+types/home";
+import { world_map } from "@/constants/world_map";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const response = await fetch(
@@ -74,7 +71,7 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [loading, setloading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-   //@ts-ignore
+  //@ts-ignore
   const countries = (loaderData ?? []) as Country[];
   const handleChange = (key: keyof TripFormData, value: string) => {
     setFormData((prev) => ({
@@ -322,17 +319,46 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
               <label htmlFor="location" className="text-sm font-medium">
                 Location on the world map
               </label>
-              <MapsComponent>
-                <LayersDirective>
-                  <LayerDirective
-                    shapeData={world_map}
-                    dataSource={mapData}
-                    shapePropertyPath={"name"}
-                    shapeDataPath="country"
-                    shapeSettings={{ colorValuePath: "color", fill: "#00000" }}
-                  />
-                </LayersDirective>
-              </MapsComponent>
+              <ComposableMap
+                projectionConfig={{ scale: 120 }}
+                width={400}
+                height={220}
+                style={{ width: "100%", height: "auto" }}
+              >
+                <Geographies geography={world_map}>
+                  {({ geographies }) =>
+                    geographies.map((geo) => (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        fill="#EAEAEC"
+                        stroke="#D6D6DA"
+                      />
+                    ))
+                  }
+                </Geographies>
+                {mapData[0].coordinates.length === 2 && (
+                  <Marker
+                    coordinates={[
+                      mapData[0].coordinates[1],
+                      mapData[0].coordinates[0],
+                    ]}
+                  >
+                    <circle r={5} fill={mapData[0].color} />
+                    <text
+                      textAnchor="middle"
+                      y={-10}
+                      style={{
+                        fontFamily: "system-ui",
+                        fill: mapData[0].color,
+                        fontSize: 12,
+                      }}
+                    >
+                      {mapData[0].country}
+                    </text>
+                  </Marker>
+                )}
+              </ComposableMap>
             </div>
 
             <button
@@ -349,8 +375,6 @@ const CreateTrips = ({ loaderData }: Route.ComponentProps) => {
           </Form>
         </section>
       </div>
-
-     
     </main>
   );
 };

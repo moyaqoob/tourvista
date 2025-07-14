@@ -1,11 +1,6 @@
 import Header from "@/components/Header";
 import MapLibreComponent from "@/components/Map";
 import { cn, parseTripData } from "@/lib/utils";
-import {
-  ChipDirective,
-  ChipListComponent,
-  ChipsDirective,
-} from "@syncfusion/ej2-react-buttons";
 import { BsCalendar2Date } from "react-icons/bs";
 import { MdOutlineLocationOn } from "react-icons/md";
 import type { LoaderFunctionArgs } from "react-router";
@@ -57,10 +52,10 @@ const TripDetail = ({
   const days = weatherInfo.length;
   const { imageUrls } = tripData;
   const pillItems = [
-    { text: travelStyle, bg: "!bg-pink-50 !text-pink-500" },
-    { text: groupType, bg: "!bg-primary-50 !text-primary-500" },
-    { text: budget, bg: "!bg-success-50 !text-success-700" },
-    { text: interests, bg: "!bg-navy-50 !text-navy,50" },
+    { text: travelStyle, bg: "bg-pink-50 text-pink-500" },
+    { text: groupType, bg: "bg-primary-50 text-primary-500" },
+    { text: budget, bg: "bg-success-50 text-success-700" },
+    { text: interests, bg: "bg-navy-50 text-navy-500" },
   ];
   const coordinate = [
     tripData.tripDetail.location.coordinates[0],
@@ -103,35 +98,28 @@ const TripDetail = ({
           </section>
 
           <section className="flex gap-3 md:gap-5 items-center flex-wrap">
-            <ChipListComponent id="travel-chip">
-              <ChipsDirective>
-                {pillItems.map((pill, i) => (
-                  <ChipDirective
-                    key={i}
-                    text={pill.text}
-                    cssClass={`${pill.bg} rounded-lg !text-base`}
-                  />
-                ))}
-              </ChipsDirective>
-            </ChipListComponent>
+            <div className="flex gap-2 flex-wrap">
+              {pillItems.map((pill, i) => (
+                <span
+                  key={i}
+                  className={`rounded-lg px-3 py-1 text-base font-medium ${pill.bg}`}
+                >
+                  {pill.text}
+                </span>
+              ))}
+            </div>
 
-            <ul className="flex gap-1 items-center ">
+            <ul className="flex gap-1 items-center">
               {Array(5)
                 .fill(null)
                 .map((_, index) => (
                   <li key={index}>
-                    <img src="/icons/star.svg" />
+                    <img src="/icons/star.svg" alt="star" />
                   </li>
                 ))}
-
-              <ChipListComponent id="travel-chip">
-                <ChipsDirective>
-                  <ChipDirective
-                    text={"4.9/5.0"}
-                    cssClass={`bg-orange-100 px-2  text-orange-600 rounded-md !text-base`}
-                  />
-                </ChipsDirective>
-              </ChipListComponent>
+              <span className="bg-orange-100 px-2 text-orange-600 rounded-md text-base ml-2">
+                4.9/5.0
+              </span>
             </ul>
           </section>
 
@@ -205,8 +193,10 @@ const TripDetail = ({
             <div className="w-full h-[400px] rounded-lg ">
               <MapLibreComponent
                 city="Seoul"
-                coordinates={[tripData.tripDetail.location.coordinates[1],
-    tripData.tripDetail.location.coordinates[0]]} // Longitude first, then latitude
+                coordinates={[
+                  tripData.tripDetail.location.coordinates[1],
+                  tripData.tripDetail.location.coordinates[0],
+                ]} // Longitude first, then latitude
                 openStreetMap="https://www.openstreetmap.org/?mlat=37.5665&mlon=126.978"
               />
             </div>

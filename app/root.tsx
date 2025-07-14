@@ -10,10 +10,8 @@ import type { Route } from "./+types/root";
 import "./app.css";
 
 import { appwriteConfig } from "@/auth/client";
-import { registerLicense } from "@syncfusion/ej2-base";
 
 
-registerLicense(appwriteConfig.licenseKey);
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

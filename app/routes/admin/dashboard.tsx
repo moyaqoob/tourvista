@@ -3,29 +3,19 @@ import Button from "@/components/Button";
 import Header from "@/components/Header";
 import StatsCard from "@/components/StatsCard";
 import TripCard from "@/components/TripCard";
-import {
-  allTrips,
-  dashboardStats,
-  tripXAxis,
-  tripyAxis,
-  user,
-  userXAxis,
-  useryAxis,
-} from "@/constants/constants";
+import { user } from "@/constants/constants";
 import { parseTripsData } from "@/lib/utils";
 import {
-  Category,
-  ChartComponent,
-  ColumnsDirective,
-  ColumnSeries,
-  DataLabel,
-  Inject,
-  SeriesCollectionDirective,
-  SeriesDirective,
-  SplineAreaSeries,
+  BarElement,
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
   Tooltip,
-} from "@syncfusion/ej2-react-charts";
-import { ColumnDirective, GridComponent } from "@syncfusion/ej2-react-grids";
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 import type { LoaderFunctionArgs } from "react-router";
 import {
   getTripsByTravelStyle,
@@ -33,9 +23,15 @@ import {
   getUsersAndTripsStats,
 } from "../api/dashboard";
 import { getAllTrips } from "../api/trips";
-
-const { totalUsers, usersJoined, totalTrips, tripsCreated, userRole } =
-  dashboardStats;
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -55,20 +51,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         getAllUsers(4, 0),
       ]);
 
-    const mappedUsers: UsersItineraryCount[] = allUsers.users.map((user) => ({
+    const mappedUsers = allUsers.users.map((user) => ({
       imageUrl: "/images/users.png",
       name: user.name,
       count: user.itineraryCount ?? Math.floor(Math.random() * 10),
+      email: user.email,
+      joinedAt: user.joinedAt,
+      status: user.status,
     }));
-    // Map the trips data correctly
-    const trips = allTrips.map(({ $id, tripDetail, imageUrls }) => {
-      return {
-        id: $id,
-        imageUrls,
-        ...parseTripsData(tripDetail),
-      };
-    });
-    
+
+    const trips = allTrips.map(({ $id, tripDetail, imageUrls }) => ({
+      id: $id,
+      imageUrls,
+      ...parseTripsData(tripDetail),
+    }));
 
     return {
       trips,
@@ -93,33 +89,66 @@ const DashBoard = ({
     total: number;
     dashboardStats: DashboardStats;
     users: string;
-    usersGrowth: string;
-    tripsByTravelStyle: string;
-    allUsers: User[];
+    usersGrowth: any[];
+    tripsByTravelStyle: any[];
+    allUsers: any[];
   };
 }) => {
   const { trips, dashboardStats, usersGrowth, tripsByTravelStyle, allUsers } =
     loaderData;
 
-  const alltrips = trips.slice(0,3).map((trip) => ({
+  // Chart data for User Growth
+  const userGrowthChartData = {
+    labels: usersGrowth.map((d) => d.day),
+    datasets: [
+      {
+        label: "User Growth",
+        data: usersGrowth.map((d) => d.count),
+        backgroundColor: "rgba(71,132,238,0.7)",
+        borderColor: "rgba(71,132,238,1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  // Chart data for Trips Growth
+  const tripsGrowthChartData = {
+    labels: tripsByTravelStyle.map((d) => d.travelStyle),
+    datasets: [
+      {
+        label: "Trips Growth",
+        data: tripsByTravelStyle.map((d) => d.count),
+        backgroundColor: "rgba(234,56,46,0.7)",
+        borderColor: "rgba(234,56,46,1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const alltrips = trips.slice(0, 3).map((trip) => ({
     imageUrl: trip.imageUrls[0],
     name: trip.name,
     interest: trip.interests,
   }));
 
-
-  const usersAndTrips: UsersAndTrips[] = [
+  const usersAndTrips = [
     {
       title: "Latest user signups",
       dataSource: allUsers,
-      field: "joinedAt",
-      headerText: "status",
+      columns: [
+        { key: "name", label: "Name" },
+        { key: "email", label: "Email" },
+        { key: "joinedAt", label: "Joined At" },
+        { key: "status", label: "Status" },
+      ],
     },
     {
       title: "Latest trips booked",
       dataSource: alltrips,
-      field: "tripsCreated",
-      headerText: "Trips created",
+      columns: [
+        { key: "name", label: "Trip Name" },
+        { key: "interest", label: "Interest" },
+      ],
     },
   ];
 
@@ -128,10 +157,9 @@ const DashBoard = ({
       <div className="flex-between">
         <Header
           title={`Welcome ${user.name} 👋`}
-          description="Track activity, trends, and
-              popular destinations in real time"
+          description="Track activity, trends, and popular destinations in real time"
         />
-        <Button text="Create a trip" to="/create-trips"/>
+        <Button text="Create a trip" to="/create-trips" />
       </div>
       <section className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -155,136 +183,102 @@ const DashBoard = ({
           />
         </div>
       </section>
+
       <section className="flex flex-col gap-9 mt-2.5">
         <div className="text-2xl">Trips</div>
         <div className="trip-card grid grid-cols-2 md:grid-cols-4">
-          {trips.slice(0, 4).map((trip, id) => {
-            return (
-              <TripCard
-                key={id}
-                id={trip?.id}
-                name={trip.name}
-                imageUrl={trip.imageUrls[2]}
-                location={trip.itinerary?.[0]?.location}
-                tags={[trip.interests, trip.travelStyle]} // Ensure tags are passed correctly
-                price={trip.estimatedPrice}
-              />
-            );
-          })}
+          {trips.slice(0, 4).map((trip, id) => (
+            <TripCard
+              key={id}
+              id={trip?.id}
+              name={trip.name}
+              imageUrl={trip.imageUrls[2]}
+              location={trip.itinerary?.[0]?.location}
+              tags={[trip.interests, trip.travelStyle]}
+              price={trip.estimatedPrice}
+            />
+          ))}
         </div>
       </section>
 
-      <section className="grid grid-cols-1 lg:grid-cols-2">
-        {/* first charrt */}
-        <ChartComponent
-          id="chart-1"
-          primaryXAxis={userXAxis}
-          primaryYAxis={useryAxis}
-          title="User growth"
-          tooltip={{ enable: true }}
-          className="rounded-xl"
-        >
-          <Inject
-            services={[
-              ColumnSeries,
-              SplineAreaSeries,
-              Category,
-              DataLabel,
-              Tooltip,
-            ]}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        {/* User Growth Chart */}
+        <div className="bg-white rounded-xl p-6 shadow">
+          <h3 className="text-lg font-semibold mb-4">User Growth</h3>
+          <Bar
+            data={userGrowthChartData}
+            options={{
+              responsive: true,
+              plugins: { legend: { display: false } },
+            }}
           />
-
-          <SeriesCollectionDirective>
-            <SeriesDirective
-              dataSource={usersGrowth}
-              xName="day"
-              yName="count"
-              type="Column"
-              name="Column"
-              columnWidth={0.3}
-              cornerRadius={{ topLeft: 10, topRight: 10 }}
-            />
-            <SeriesDirective
-              dataSource={usersGrowth}
-              xName="day"
-              yName="count"
-              type="SplineArea"
-              name="Wave"
-              fill="rgba(71,132,238,0.3)"
-              columnWidth={0.3}
-              cornerRadius={{ topLeft: 10, topRight: 10 }}
-            />
-          </SeriesCollectionDirective>
-        </ChartComponent>
-
-        {/* trips growth data  */}
-        <ChartComponent
-          id="chart-2"
-          primaryXAxis={tripXAxis}
-          primaryYAxis={tripyAxis}
-          title="Trips Growth"
-          tooltip={{ enable: true }}
-        >
-          <Inject
-            services={[
-              ColumnSeries,
-              SplineAreaSeries,
-              Category,
-              DataLabel,
-              Tooltip,
-            ]}
+        </div>
+        {/* Trips Growth Chart */}
+        <div className="bg-white rounded-xl p-6 shadow">
+          <h3 className="text-lg font-semibold mb-4">Trips Growth</h3>
+          <Bar
+            data={tripsGrowthChartData}
+            options={{
+              responsive: true,
+              plugins: { legend: { display: false } },
+            }}
           />
-          <SeriesCollectionDirective>
-            <SeriesDirective
-              dataSource={tripsByTravelStyle}
-              xName="travelStyle"
-              yName="count"
-              type="Column"
-              name="Column"
-              columnWidth={0.2}
-              cornerRadius={{ topLeft: 10, topRight: 10 }}
-            />
-          </SeriesCollectionDirective>
-        </ChartComponent>
+        </div>
       </section>
 
-      <section className="user-trip wrapper">
-        {usersAndTrips.map(({ title, dataSource, field, headerText }, i) => (
-          <div key={i} className="flex flex-col gap-5">
-            <h3 className="p-20-semibold text-dark-100">{title}</h3>
-
-            <GridComponent
-              dataSource={dataSource}
-              gridLines="None"
-              className="border border-gray-300 rounded-lg overflow-hidden shadow-md"
-            >
-              <ColumnsDirective>
-                {/* Column for Name */}
-                <ColumnDirective
-                  field="name"
-                  headerText="Name"
-                  width="500"
-                  textAlign="Left"
-                  template={(props: UserData) => (
-                    <div className="flex items-center min-w-md overflow-x-hidden gap-4 px-4 py-2 border-b border-gray-200">
-                      <img
-                        src={props.imageUrl || "/images/users.png"}
-                        alt="user"
-                        className="rounded-full w-10 h-10 aspect-square"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="overflow-hidden scroll-auto min-w-md">
-                        <span className="text-lg font-medium overflow-hidden ">
-                          {props.name}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                />
-              </ColumnsDirective>
-            </GridComponent>
-          </div>
-        ))}
+      <section className="user-trip wrapper mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {usersAndTrips.map(({ title, dataSource, columns }, i) => (
+            <div key={i} className="flex flex-col gap-5">
+              <h3 className="p-20-semibold text-dark-100">{title}</h3>
+              <div className="overflow-x-auto">
+                <table className="min-w-full bg-white rounded-lg shadow overflow-hidden">
+                  <thead>
+                    <tr className="bg-gray-100 text-left">
+                      {columns.map((col) => (
+                        <th key={col.key} className="px-6 py-3">
+                          {col.label}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dataSource.map((row: any, idx: number) => (
+                      <tr
+                        key={idx}
+                        className="border-b last:border-none hover:bg-gray-50"
+                      >
+                        {columns.map((col) => (
+                          <td key={col.key} className="px-6 py-4">
+                            {col.key === "status" ? (
+                              <span
+                                className={`px-2 py-1 rounded ${
+                                  row.status === "user"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-gray-200 text-gray-700"
+                                }`}
+                              >
+                                {row.status}
+                              </span>
+                            ) : col.key === "joinedAt" ? (
+                              <span>
+                                {row.joinedAt
+                                  ? new Date(row.joinedAt).toLocaleDateString()
+                                  : ""}
+                              </span>
+                            ) : (
+                              row[col.key]
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   );

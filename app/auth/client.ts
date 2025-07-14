@@ -7,8 +7,6 @@ const appwriteConfig = {
   userscollection: import.meta.env.VITE_APPWRITE_USERS_COLLECTION || " ",
   tripsCollection: import.meta.env.VITE_APPWRITE_TRIPS_COLLECTION || " ",
   endpointUrl: import.meta.env.VITE_APPWRITE_URL || "NOT found ",
-  licenseKey:
-    import.meta.env.VITE_SYNCFUSION_LICENSE_KEY || "license not found",
   geminiKey: import.meta.env.VITE_GEMINI_KEY,
   unsplashKey: import.meta.env.VITE_UNSPLASH_KEY,
 };
