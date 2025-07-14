@@ -9,7 +9,7 @@ export default defineConfig((config) => {
   return {
     plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
     build: {
-      outDir: "dist", 
+      outDir: "build", 
     },
   };
 });
