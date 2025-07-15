@@ -3,13 +3,12 @@
   "private": true,
   "type": "module",
   
-  "scripts": {
-    "dev": "react-router dev",
+   "scripts": {
     "build": "react-router build",
-    "typecheck": "react-router typegen && tsc --noEmit",
-    "start": "react-router serve"
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc"
   },
-
   "devDependencies": {
     "@google/generative-ai": "^0.24.1",
     "@react-router/dev": "^7.6.3",

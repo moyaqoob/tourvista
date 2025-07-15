@@ -1,4 +1,4 @@
-import { appwriteConfig, database } from "@/auth/client";
+import { appwriteConfig, database } from "@/auth/client"
 import { parseTripData, parseTripsData } from "@/lib/utils";
 
 interface Document {

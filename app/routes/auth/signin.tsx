@@ -1,9 +1,8 @@
-import { loginWithgoogle } from "@/auth/auth";
+import { loginWithgoogle } from "../../auth/auth";
 import { account, appwriteConfig } from "@/auth/client";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { redirect, useNavigate } from "react-router";
+import { redirect } from "react-router";
 import { images } from "../../../public/assets";
 
 

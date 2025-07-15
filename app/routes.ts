@@ -6,7 +6,7 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  route("sign-in", "./routes/auth/signin.tsx"),
+  route("signin", "./routes/auth/signin.tsx"),
   route("auth/callback", "./routes/api/callback.ts"),
   route("create-trip", "./routes/api/create-trip.ts"),
   index("./routes/home.tsx"),
@@ -21,3 +21,4 @@ export default [
     route("travel/:tripId", "./routes/user/travel-detail.tsx"),
   ]),
 ] satisfies RouteConfig;
+

@@ -1,6 +1,8 @@
 {
   "include": [
-    "app/**/*",
+    "**/*",
+    "**/.server/**/*",
+    "**/.client/**/*",
     ".react-router/types/**/*"
   ],
   "compilerOptions": {
@@ -11,10 +13,9 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "rootDirs": [".", "./.react-router/types"],
-    "outDir": "/build",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"]
+      "@/*": ["/app/*"]
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
