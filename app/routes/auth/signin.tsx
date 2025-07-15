@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { redirect, useNavigate } from "react-router";
-import { icons } from "public/assets";
-import { images } from "public/assets";
+import { images } from "../../../public/assets";
 
 
 export async function clientLoader() {
@@ -35,7 +34,7 @@ const signin = () => {
 
           <article className="text-center gap-y-2">
             <h2 className="p-28-semibold text-center">
-              Admin Dashboard Login
+              User/Admin Login
             </h2>
             <p className="text-gray-500 min-w-20">
               Sign in with Google to manage destinations, itineraries, and user

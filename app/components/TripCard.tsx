@@ -1,4 +1,4 @@
-import { icons } from "public/assets";
+import { icons } from "../../public/assets";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { Link, useLocation } from "react-router";

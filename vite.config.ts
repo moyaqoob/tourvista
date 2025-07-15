@@ -1,15 +1,19 @@
 import { reactRouter } from "@react-router/dev/vite";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
+
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
 
-// Import the SSR plugin (see references for install instructions)
-
-export default defineConfig(() => {
-  return {
-    plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
-    build: {
-      outDir: "build", 
-    },
-  };
+export default defineConfig({
+  plugins: [react(), tsconfigPaths(), reactRouter()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "app")
+    }
+  },
+  build: {
+    outDir: "build/client",
+    sourcemap: true
+  }
 });

@@ -3,7 +3,6 @@ import { Outlet, redirect } from "react-router";
 import { MobileSidebar } from "../../components/mobile-sidebar";
 import { account } from "@/auth/client";
 import { getExistingUser, storeUserData } from "@/auth/auth";
-import toast from "react-hot-toast";
 
 export async function clientLoader() {
   try {
