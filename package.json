@@ -2,12 +2,14 @@
   "name": "travel-agency",
   "private": true,
   "type": "module",
+  
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "react-router dev",
+    "build": "react-router build",
     "typecheck": "react-router typegen && tsc --noEmit",
-    "start": "serve -s build/client"
+    "start": "react-router serve"
   },
+
   "devDependencies": {
     "@google/generative-ai": "^0.24.1",
     "@react-router/dev": "^7.6.3",
