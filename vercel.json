@@ -1,7 +1,5 @@
 {
-  "scripts": {
-    "build": "react-router build",
-    "start": "react-router-serve ./build/server/index.js"
-  },
+  "buildCommand": "react-router build",
+  "startCommand": "react-router-serve ./build/server/index.js",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
