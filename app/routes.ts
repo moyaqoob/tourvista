@@ -6,7 +6,7 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  route("signin", "./routes/auth/signin.tsx"),
+  route("sign-in", "./routes/auth/signin.tsx"),
   route("auth/callback", "./routes/api/callback.ts"),
   route("create-trip", "./routes/api/create-trip.ts"),
   index("./routes/home.tsx"),
