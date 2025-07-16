@@ -2,7 +2,6 @@ import { jsx, jsxs } from "react/jsx-runtime";
 import { PassThrough } from "node:stream";
 import { createReadableStreamFromReadable } from "@react-router/node";
 import { ServerRouter, UNSAFE_withComponentProps, Outlet, UNSAFE_withErrorBoundaryProps, isRouteErrorResponse, Meta, Links, ScrollRestoration, Scripts, redirect, useNavigate, useLocation, Link, useSearchParams, useLoaderData, NavLink, Form } from "react-router";
-import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { Client, Account, Databases, Storage, OAuthProvider, Query, ID } from "appwrite";
 import { Slot } from "@radix-ui/react-slot";
