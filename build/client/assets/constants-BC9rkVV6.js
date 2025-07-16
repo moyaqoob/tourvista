@@ -1,0 +1,1 @@
+import{f as e}from"./utils-CwAv1DVN.js";const i=["Food & Culinary","Historical Sites","Hiking & Nature Walks","Beaches & Water Activities","Museums & Art","Nightlife & Bars","Photography Spots","Shopping","Local Experiences"],t=["Budget","Mid-range","Luxury","Premium"],s={name:"Yaqoob"};e("2025-01-01"),e("2025-01-02"),e("2025-01-03");export{t as b,i,s as u};

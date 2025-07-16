@@ -1,0 +1,1 @@
+import{w as s,O as a}from"./chunk-QMGIS6GS-DUojPP0c.js";import{j as t}from"./jsx-runtime-LfUQRbvB.js";const o=()=>t.jsx("div",{className:"page-layout",children:t.jsx("aside",{children:t.jsx(a,{})})}),p=s(o);export{p as default};
