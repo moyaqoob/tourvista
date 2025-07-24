@@ -4,3 +4,7 @@ node_modules
 README.md
 .env.local
 
+build
+
+build/client
+build/server
